@@ -24,7 +24,7 @@ const controller = require("../controllers/pessoa.controller");
  *           description: Idade da pessoa
  *         sexo:
  *           type: string
- *           description: Sexo da pessoa (ex: 'M' ou 'F')
+ *           description: "Sexo da pessoa (ex: 'M' ou 'F')"
  *       example:
  *         id: 1
  *         nome: João Silva
