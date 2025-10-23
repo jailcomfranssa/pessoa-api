@@ -1,6 +1,7 @@
 const service = require("../services/pessoa.service");
 const { validarId } = require("../utils/validate");
 const response = require("../utils/response");
+const { pessoaToDTO, pessoasToDTO } = require("../utils/mapper");
 
 exports.listar = async (req, res, next) => {
     try {
@@ -11,7 +12,8 @@ exports.listar = async (req, res, next) => {
         };
 
         const pessoas = await service.listar(filtros);
-        return response.success(res, pessoas, "Pessoas filtradas");
+        const pessoasDTO = pessoasToDTO(pessoas);
+        return response.success(res, pessoasDTO, "Pessoas filtradas");
     } catch (err) {
         next(err);
     }
@@ -22,7 +24,9 @@ exports.buscarPorId = async (req, res, next) => {
         validarId(req.params.id);
         const pessoa = await service.buscarPorId(+req.params.id);
         if (!pessoa) throw { status: 404, message: "Pessoa não encontrada" };
-        return response.success(res, pessoa, "Pessoa encontrada");
+
+        const pessoaDTO = pessoaToDTO(pessoa);
+        return response.success(res, pessoaDTO, "Pessoa encontrada");
     } catch (err) {
         next(err);
     }
@@ -38,7 +42,8 @@ exports.criar = async (req, res, next) => {
         if (existe) throw { status: 409, message: "Pessoa já cadastrada" };
 
         const nova = await service.criar(req.body);
-        return response.success(res, nova, "Pessoa criada", 201);
+        const novaDTO = pessoaToDTO(nova);
+        return response.success(res, novaDTO, "Pessoa criada", 201);
     } catch (err) {
         next(err);
     }
@@ -48,7 +53,8 @@ exports.atualizar = async (req, res, next) => {
     try {
         validarId(req.params.id);
         const atualizada = await service.atualizar(+req.params.id, req.body);
-        return response.success(res, atualizada, "Pessoa atualizada");
+        const atualizadaDTO = pessoaToDTO(atualizada);
+        return response.success(res, atualizadaDTO, "Pessoa atualizada");
     } catch (err) {
         next(err);
     }

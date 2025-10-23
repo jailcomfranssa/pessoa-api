@@ -42,6 +42,7 @@ exports.schemaFiltro = Joi.object({
     sexo: Joi.string().valid("M", "F", "Outro").insensitive(),
 }).options({ allowUnknown: false });
 
+
 exports.validarId = (id) => {
     const { error } = Joi.number().integer().positive().validate(id);
     if (error)

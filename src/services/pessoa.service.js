@@ -1,22 +1,26 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-exports.listar = ({ nome, idade, sexo, page = 1, limit = 10 }) => {
+exports.listar = async ({ nome, idade, sexo, page = 1, limit = 10 }) => {
+  try {
     const where = {};
-    if (nome) where.nome = { contains: nome, mode: "insensitive" };
+    if (nome) where.nome = { contains: nome, mode: 'insensitive' };
     if (idade !== undefined) where.idade = idade;
     if (sexo) where.sexo = sexo;
 
     const take = Math.min(parseInt(limit, 10) || 10, 100);
     const skip = (Math.max(parseInt(page, 10) || 1, 1) - 1) * take;
 
-    return prisma.pessoa.findMany({ where, take, skip });
+    return await prisma.pessoa.findMany({ where, take, skip });
+  } catch (error) {
+    throw error;
+  }
 };
 
 exports.buscarPorId = (id) => prisma.pessoa.findUnique({ where: { id } });
 
 exports.buscarPorNomeEIdade = (nome, idade) => {
-    return prisma.pessoa.findFirst({ where: { nome, idade } });
+  return prisma.pessoa.findFirst({ where: { nome, idade } });
 };
 
 exports.criar = (data) => prisma.pessoa.create({ data });
