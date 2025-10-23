@@ -1,6 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const controller = require("../controllers/pessoa.controller");
+const controller = require('../controllers/pessoa.controller');
+const { validarBody, validarQuery } = require('../middlewares/validate.middleware');
+const { schemaCriar, schemaAtualizar, schemaFiltro } = require('../utils/validate');
 
 /**
  * @swagger
@@ -47,7 +49,7 @@ const controller = require("../controllers/pessoa.controller");
  *               items:
  *                 $ref: '#/components/schemas/Pessoa'
  */
-router.get("/", controller.listar);
+router.get('/', validarQuery(schemaFiltro), controller.listar);
 
 /**
  * @swagger
@@ -70,7 +72,7 @@ router.get("/", controller.listar);
  *       404:
  *         description: Pessoa não encontrada
  */
-router.get("/:id", controller.buscarPorId);
+router.get('/:id', controller.buscarPorId);
 
 /**
  * @swagger
@@ -93,7 +95,7 @@ router.get("/:id", controller.buscarPorId);
  *       400:
  *         description: Dados inválidos
  */
-router.post("/", controller.criar);
+router.post('/', validarBody(schemaCriar), controller.criar);
 
 /**
  * @swagger
@@ -124,7 +126,7 @@ router.post("/", controller.criar);
  *       404:
  *         description: Pessoa não encontrada
  */
-router.put("/:id", controller.atualizar);
+router.put('/:id', validarBody(schemaAtualizar), controller.atualizar);
 
 /**
  * @swagger
@@ -143,6 +145,6 @@ router.put("/:id", controller.atualizar);
  *       404:
  *         description: Pessoa não encontrada
  */
-router.delete("/:id", controller.remover);
+router.delete('/:id', controller.remover);
 
 module.exports = router;
