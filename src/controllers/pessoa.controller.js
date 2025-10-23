@@ -1,10 +1,16 @@
 const service = require("../services/pessoa.service");
 const { validarPessoa } = require("../utils/validate");
+const response = require("../utils/response");
 
 exports.listar = async (req, res, next) => {
     try {
-        const pessoas = await service.listar();
-        res.json(pessoas);
+        const filtros = {
+            nome: req.query.nome,
+            idade: req.query.idade ? parseInt(req.query.idade) : undefined,
+            sexo: req.query.sexo,
+        };
+        const pessoas = await service.listar(filtros);
+        response.success(res, pessoas, "Pessoas filtradas");
     } catch (err) {
         next(err);
     }

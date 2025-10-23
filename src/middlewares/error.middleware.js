@@ -1,6 +1,6 @@
+const { error } = require("../utils/response");
+
 module.exports = (err, req, res, next) => {
     const status = err.status || 500;
-    res.status(status).json({
-        erro: err.message || "Erro interno do servidor",
-    });
+    error(res, err.message || "Erro interno do servidor", status, err.detalhes);
 };
