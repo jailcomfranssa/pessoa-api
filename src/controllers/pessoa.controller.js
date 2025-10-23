@@ -1,5 +1,5 @@
 const service = require("../services/pessoa.service");
-const { validarPessoa } = require("../utils/validate");
+const { validarPessoa, validarId } = require("../utils/validate");
 const response = require("../utils/response");
 
 exports.listar = async (req, res, next) => {
@@ -18,6 +18,7 @@ exports.listar = async (req, res, next) => {
 
 exports.buscarPorId = async (req, res, next) => {
     try {
+        validarId(req.params.id);
         const pessoa = await service.buscarPorId(+req.params.id);
         if (!pessoa)
             return res.status(404).json({ erro: "Pessoa não encontrada" });
