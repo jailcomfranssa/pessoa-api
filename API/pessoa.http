@@ -1,0 +1,24 @@
+### Pessoa GET
+GET http://localhost:3000/pessoas
+
+
+### Pessoa GET by ID
+GET http://localhost:3000/pessoas/1
+
+### Pessoa POST
+POST http://localhost:3000/pessoas
+Content-Type: application/json
+
+{
+    "nome": "João Silva",
+    "idade": 30,
+    "sexo": "F"
+}
+
+### Pessoa PUT
+PUT http://localhost:3000/pessoas/11
+Content-Type: application/json
+
+{
+    "sexo": "M"
+}
